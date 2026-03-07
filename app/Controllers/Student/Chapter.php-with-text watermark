@@ -1,0 +1,227 @@
+<?php
+namespace App\Controllers\Student;
+
+use App\Controllers\BaseController;
+use App\Models\ChapterModel;
+use Mpdf\Mpdf;
+use Mpdf\Config\ConfigVariables;
+use Mpdf\Config\FontVariables;
+
+class Chapter extends BaseController
+{
+    public function exportpdf($slug)
+    {
+        $chapterModel = new ChapterModel();
+        $chapter = $chapterModel->where('slug', $slug)->first();
+
+        if (!$chapter) {
+            return redirect()->back()->with('error', 'Chapter not found');
+        }
+
+        // Ensure temporary directory exists
+        $tempDir = WRITEPATH . 'mpdf_temp';
+        if (!is_dir($tempDir)) {
+            mkdir($tempDir, 0777, true);
+        }
+
+        // Configure mPDF
+        $defaultConfig = (new ConfigVariables())->getDefaults();
+        $fontDirs = $defaultConfig['fontDir'];
+        
+        $defaultFontConfig = (new FontVariables())->getDefaults();
+        $fontData = $defaultFontConfig['fontdata'];
+        
+        $config = [
+            'mode' => 'utf-8',
+            'format' => 'A4',
+            'orientation' => 'P',
+            'default_font_size' => 14,
+            'default_font' => 'mangal', 
+            'margin_left' => 15,
+            'margin_right' => 15,
+            'margin_top' => 25,
+            'margin_bottom' => 20,
+            'margin_header' => 5,
+            'margin_footer' => 10,
+            'fontDir' => array_merge($fontDirs, [
+                FCPATH . 'fonts/'
+            ]),
+            'fontdata' => $fontData + [
+                'mangal' => [ 
+                    'R' => 'Mangal Regular.ttf',
+                    'B' => 'Mangal Bold.ttf',
+                    'useOTL' => 0x00,
+                    'useKashida' => 0,
+                ]
+            ],
+            'tempDir' => $tempDir,
+            'autoScriptToLang' => true,
+            'autoLangToFont' => true,
+            'useSubstitutions' => true,
+        ];
+
+        // Create mPDF instance
+        $mpdf = new Mpdf($config);
+        
+        // ✅ IMPORTANT: पहले image watermark को DISABLE करें
+        $mpdf->showWatermarkImage = false; // यह line जरूरी है
+        
+        // ✅ TEXT WATERMARK SET करें
+        $mpdf->SetWatermarkText('ARUN COMPUTER', 0.08); // 8% opacity
+        $mpdf->showWatermarkText = true;
+        
+        // या Hindi में watermark (इनमें से एक choose करें)
+        // $mpdf->SetWatermarkText('अरुण कंप्यूटर', 0.07);
+        // $mpdf->showWatermarkText = true;
+        
+        // ✅ Set HEADER
+        $mpdf->SetHTMLHeader('
+        <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 5px; margin-bottom: 10px;">
+            <table width="100%" style="border-collapse: collapse;">
+                <tr>
+                    <td width="15%" style="text-align: left; vertical-align: middle;">
+                        <img src="' . base_url('assets/images/apple-touch-icon.png') . '" style="height: 60px; width: auto;">
+                    </td>
+                    <td style="text-align: center; vertical-align: middle;">
+                        <h1 style="font-family: mangal; font-size: 20px; margin: 0; color: #000080;">
+                            <strong>अरुण कंप्यूटर कॉलेज</strong>
+                        </h1>
+                        <p style="font-family: mangal; font-size: 14px; margin: 2px 0; color: #333;">
+                            शिक्षा का उज्ज्वल भविष्य
+                        </p>
+                    </td>
+                    <td width="15%" style="text-align: right; vertical-align: middle;">
+                        <div style="font-family: mangal; font-size: 12px; color: #666;">
+                            ' . date('d/m/Y') . '
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        ');
+        
+        // ✅ Set FOOTER
+        $mpdf->SetHTMLFooter('
+        <div style="text-align: center; font-family: mangal; font-size: 10px; color: #666; border-top: 1px solid #ccc; padding-top: 5px;">
+            <table width="100%" style="border-collapse: collapse;">
+                <tr>
+                    <td width="33%" style="text-align: left;">
+                        पेज {PAGENO} / {nbpg}
+                    </td>
+                    <td width="34%" style="text-align: center;">
+                        अरुण कंप्यूटर कॉलेज © ' . date('Y') . '
+                    </td>
+                    <td width="33%" style="text-align: right;">
+                        www.aruncomputer.com
+                    </td>
+                </tr>
+            </table>
+        </div>
+        ');
+
+        // Set document metadata
+        $mpdf->SetTitle($chapter['name'] . ' - Arun Computer College');
+        $mpdf->SetAuthor('Arun Computer College');
+        $mpdf->SetSubject('Educational Material');
+        $mpdf->SetCreator('Arun Computer College PDF Generator');
+        
+        // Add a page
+        $mpdf->AddPage();
+
+        // ✅ Chapter title with styling
+        $chapterTitle = '
+        <div style="text-align: center; margin-bottom: 20px;">
+            <h2 style="font-family: mangal; font-size: 22px; color: #000080; margin-bottom: 5px; padding-bottom: 5px; border-bottom: 2px solid #000080;">
+                ' . htmlspecialchars($chapter['name']) . '
+            </h2>
+            <div style="font-family: mangal; font-size: 12px; color: #666; margin-top: 5px;">
+                अध्याय सामग्री
+            </div>
+        </div>
+        ';
+
+        // ✅ Chapter content with proper styling
+        $content = '
+        <style>
+            .chapter-content {
+                font-family: mangal;
+                font-size: 14px;
+                line-height: 1.4;
+                text-align: justify;
+                text-justify: inter-word;
+                margin: 0;
+                padding: 0;
+            }
+            .chapter-content p {
+                margin-top: 8px;
+                margin-bottom: 8px;
+                text-indent: 20px;
+            }
+            .chapter-content h3 {
+                font-family: mangal;
+                font-size: 16px;
+                color: #000080;
+                margin-top: 15px;
+                margin-bottom: 10px;
+                padding-bottom: 3px;
+                border-bottom: 1px dashed #ccc;
+            }
+            .chapter-content ul, .chapter-content ol {
+                margin-top: 10px;
+                margin-bottom: 10px;
+                margin-left: 30px;
+            }
+            .chapter-content li {
+                margin-bottom: 5px;
+            }
+            .chapter-content strong {
+                color: #000080;
+            }
+            .chapter-content .note {
+                background-color: #f5f5f5;
+                border-left: 4px solid #000080;
+                padding: 10px;
+                margin: 15px 0;
+                font-size: 13px;
+            }
+        </style>
+        
+        <div class="chapter-content">';
+        
+        // Filter content to remove images
+        $filteredContent = $this->removeImagesFromContent($chapter['content']);
+        
+        // Combine title and content
+        $htmlContent = $chapterTitle . $content . $filteredContent . '</div>';
+        
+        // Write content
+        $mpdf->WriteHTML($htmlContent);
+        
+        // Output PDF
+        $mpdf->Output($chapter['name'] . ".pdf", 'I');
+        exit;
+    }
+    
+    /**
+     * Remove images from content
+     */
+    private function removeImagesFromContent($html)
+    {
+        // Remove all <img> tags
+        $html = preg_replace('/<img[^>]+\>/i', '', $html);
+        
+        // Remove empty image containers
+        $html = preg_replace('/<div[^>]*class="[^"]*(image|img|photo|figure)[^"]*"[^>]*>\s*<\/div>/i', '', $html);
+        
+        // Remove image with captions
+        $html = preg_replace('/<figure[^>]*>.*?<\/figure>/is', '', $html);
+        
+        // Clean up extra empty paragraphs
+        $html = preg_replace('/<p>\s*<\/p>/i', '', $html);
+        
+        // Clean up multiple line breaks
+        $html = preg_replace('/(<br\s*\/?>\s*){3,}/i', '<br><br>', $html);
+        
+        return $html;
+    }
+}

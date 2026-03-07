@@ -1,0 +1,252 @@
+<?php
+namespace App\Controllers\Admin;
+
+use App\Controllers\BaseController;
+use App\Models\Admin\AdmissionModel;
+use App\Models\Admin\FeeModel;
+use App\Models\Academic\CourseModel;
+
+class Admission extends BaseController
+
+{
+public function index()
+{
+    // Check admin authentication
+    $authCheck = $this->checkAdminAuth();
+    if ($authCheck !== true) {
+        return $authCheck;
+    }
+
+    $course = $this->request->getGet('course');
+    $year = $this->request->getGet('year');
+
+    $admissionModel = new \App\Models\Admin\AdmissionModel();
+    $courseModel = new \App\Models\Academic\CourseModel();
+
+    // Course list for dropdown
+    $data['courses'] = $courseModel->findAll();
+
+    // Year list from admission dates
+    $db = \Config\Database::connect();
+    $data['years'] = $db->table('admissions')
+        ->select('YEAR(admission_date) as year')
+        ->groupBy('year')
+        ->orderBy('year', 'DESC')
+        ->get()->getResultArray();
+
+    // Main query with filters
+    $builder = $db->table('admissions');
+    if (!empty($course)) {
+        $builder->where('course', $course);
+    }
+    if (!empty($year)) {
+        $builder->where('YEAR(admission_date)', $year);
+    }
+    $data['students'] = $builder->get()->getResultArray();
+
+    // Send selected values to view
+    $data['selectedCourse'] = $course;
+    $data['selectedYear'] = $year;
+
+    return view('admission/list', $data);
+}
+
+
+
+
+public function create()
+{
+    // Check admin authentication
+    $authCheck = $this->checkAdminAuth();
+    if ($authCheck !== true) {
+        return $authCheck;
+    }
+
+    $courseModel = new CourseModel();
+    $validation = session('_ci_validation_errors') ? \Config\Services::validation() : null;
+
+    return view('admission/form_admin', [
+        'courses' => $courseModel->findAll(),
+        'validation' => $validation
+    ]);
+}
+
+
+    public function store()
+    {
+        // Check admin authentication
+        $authCheck = $this->checkAdminAuth();
+        if ($authCheck !== true) {
+            return $authCheck;
+        }
+       
+        helper(['form', 'url']);
+         // ✅ STEP 1: Define model पहले
+        $admissionModel = new AdmissionModel();
+        $feesModel = new FeeModel();
+
+       // dd('validation failed'); // test whether validation fail block is hit
+
+        $rules = [
+                'name' => 'required',
+                'father_name' => 'required',
+                'dob' => 'required',
+                'course' => 'required',
+                'phone' => 'required',
+                'email' => 'required|valid_email',
+                'photo' => 'uploaded[photo]|max_size[photo,2048]|is_image[photo]',
+                'course_fee' => 'required|numeric',
+                'discount' => 'required|numeric',
+                'admission_date' => 'required|valid_date',
+                'admission_fee' => 'required|numeric',
+                'receipt_number' => 'required|numeric',
+               
+        ];
+
+
+    if (!$this->validate($rules)) {
+    session()->setFlashdata('_ci_validation_errors', $this->validator->getErrors());
+    return redirect()->back()->withInput();
+}
+        
+        // Step 2: Handle file upload
+        $photoFile = $this->request->getFile('photo');
+        $newName = $photoFile->getRandomName();
+        $photoFile->move('uploads/', $newName);
+        
+            $password = 'student123'; // Direct password set
+    $hashedPassword = password_hash($password, PASSWORD_BCRYPT); // ✅ YEH LI
+    
+    
+        $data = [
+            'admission_date' => $this->request->getPost('admission_date'),
+
+            'admission_amount' => $this->request->getPost('admission_amount'),
+            'receipt_number'   => $this->request->getPost('receipt_number'),
+
+            'course' => $this->request->getPost('course'),
+            'name' => $this->request->getPost('name'),
+            'father_name' => $this->request->getPost('father_name'),
+            'dob' => $this->request->getPost('dob'),
+            'phone' => $this->request->getPost('phone'),
+            'email' => $this->request->getPost('email'),
+            'course_fee' => $this->request->getPost('course_fee'),
+            'discount' => $this->request->getPost('discount'),
+        
+            'photo' => $newName,
+             'password' => $hashedPassword, // ✅
+        ];
+
+
+        $admissionModel->insert($data); // 👈 यही model object use करें
+        $studentId = $admissionModel->getInsertID(); // ✅ now correct ID
+
+
+        // Step 3: Save first installment as admission fee
+        $admissionFee = $this->request->getPost('admission_fee');
+        if ($admissionFee > 0) {
+        $feesModel->save([
+            'student_id' => $studentId,
+            'installment_number' => 1,
+            'amount' => $admissionFee,
+            'payment_date' => $this->request->getPost('admission_date'),
+            //'receipt_number' => rand(1000, 9999)
+
+            'receipt_number' => $this->request->getPost('receipt_number')
+        ]);
+    }
+        //return redirect()->to('/admin/admission')->with('success', 'Admission created successfully');
+                   return redirect()->to('/admin/admission/create')->with('success', 'Admission successful!');
+    }
+
+    public function edit($id)
+    {
+        // Check admin authentication
+        $authCheck = $this->checkAdminAuth();
+        if ($authCheck !== true) {
+            return $authCheck;
+        }
+
+        $model = new AdmissionModel();
+        $data['student'] = $model->find($id);
+
+        if (!$data['student']) {
+            return redirect()->to('/admin/admission')->with('error', 'Student not found');
+        }
+
+        return view('admission/edit', $data);  // अगर आपने view/admission/edit.php रखा है
+    
+
+    }
+
+    public function delete($id)
+    {
+        // Check admin authentication
+        $authCheck = $this->checkAdminAuth();
+        if ($authCheck !== true) {
+            return $authCheck;
+        }
+
+        $model = new AdmissionModel();
+        $model->delete($id);
+        return redirect()->to('/admin/admission')->with('success', 'Deleted successfully');
+    }
+    public function update($id)
+{
+    // Check admin authentication
+    $authCheck = $this->checkAdminAuth();
+    if ($authCheck !== true) {
+        return $authCheck;
+    }
+
+    helper(['form', 'url']);
+
+    $model = new AdmissionModel();
+    $student = $model->find($id);
+
+    if (!$student) {
+        return redirect()->to('/admin/admission')->with('error', 'Student not found');
+    }
+
+    $rules = [
+        'name' => 'required',
+        'father_name' => 'required',
+        'dob' => 'required',
+        'course' => 'required',
+        'phone' => 'required',
+        'email' => 'required|valid_email',
+    ];
+
+    if (!$this->validate($rules)) {
+        return view('admission/edit', [
+            'validation' => $this->validator,
+            'student' => $student
+        ]);
+    }
+
+    $data = [
+        'name' => $this->request->getPost('name'),
+        'father_name' => $this->request->getPost('father_name'),
+        'dob' => $this->request->getPost('dob'),
+        'course' => $this->request->getPost('course'),
+        'phone' => $this->request->getPost('phone'),
+        'email' => $this->request->getPost('email'),
+    ];
+
+    // If new photo uploaded, replace
+    $photoFile = $this->request->getFile('photo');
+    if ($photoFile && $photoFile->isValid()) {
+        $newName = $photoFile->getRandomName();
+        $photoFile->move('uploads/', $newName);
+        $data['photo'] = $newName;
+    }
+
+    $model->update($id, $data);
+
+    return redirect()->to('/admin/admission/create')->with('success', 'Admission updated successfully');
+}
+
+
+
+
+}

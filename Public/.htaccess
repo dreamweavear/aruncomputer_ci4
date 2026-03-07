@@ -1,0 +1,7 @@
+RewriteEngine On
+#line below is not used in bigrock server -added latter as in other xampp ci4 application
+RewriteBase /aruncomputer_ci4/public/
+# Redirect to index.php if not a real file/directory
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php/$1 [L]
