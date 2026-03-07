@@ -56,17 +56,15 @@ $routes->group('admin', function($routes){
     $routes->post('chapters/update/(:num)', 'Admin\ChapterController::update/$1');
     $routes->post('chapters/delete/(:num)', 'Admin\ChapterController::delete/$1'); // ✅ FIXED
 });
-
-// subjects
-$routes->group('admin/subjects', function($routes) {
-    $routes->get('/', 'SubjectController::index');
-    $routes->get('create', 'SubjectController::create');
-    $routes->post('store', 'SubjectController::store');
-    $routes->get('edit/(:num)', 'SubjectController::edit/$1');
-    $routes->post('update/(:num)', 'SubjectController::update/$1');
-    $routes->post('delete/(:num)', 'SubjectController::delete/$1'); // ✅ FIXED
+// admin gallery CRUD
+$routes->group('admin', function($routes) {
+    $routes->get('gallery', 'Admin\GalleryController::index');
+    $routes->get('gallery/create', 'Admin\GalleryController::create');
+    $routes->post('gallery/store', 'Admin\GalleryController::store');
+    $routes->get('gallery/edit/(:num)', 'Admin\GalleryController::edit/$1');
+    $routes->post('gallery/update/(:num)', 'Admin\GalleryController::update/$1');
+    $routes->post('gallery/delete/(:num)', 'Admin\GalleryController::delete/$1');
 });
-
 // courses
 $routes->group('admin', function($routes) {
     $routes->get('courses', 'Academic\CourseController::index');
