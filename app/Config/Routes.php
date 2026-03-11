@@ -105,6 +105,7 @@ $routes->get('admin/chapters/getUnitsByPaper', 'Admin\ChapterController::getUnit
 $routes->get('admin/fees', 'Admin\Fees::index');
 $routes->get('admin/fees/create', 'Admin\Fees::create');
 $routes->post('admin/fees/store', 'Admin\Fees::store');
+$routes->get('admin/fees/add/(:num)', 'Admin\Fees::add/$1');
 $routes->get('admin/fees/edit/(:num)', 'Admin\Fees::edit/$1');
 $routes->post('admin/fees/update/(:num)', 'Admin\Fees::update/$1');
 $routes->post('admin/fees/delete/(:num)', 'Admin\Fees::delete/$1'); // ✅ FIXED

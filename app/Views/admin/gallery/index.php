@@ -1,4 +1,6 @@
-<?= $this->include('templates/headeradmin') ?>
+<?= $this->extend('admin/layout') ?>
+
+<?= $this->section('content') ?>
 
 <div class="container my-4">
     <h2>Manage Gallery</h2>
@@ -37,4 +39,4 @@
     </table>
 </div>
 
-<?= $this->include('templates/footerdash') ?>
+<?= $this->endSection() ?>

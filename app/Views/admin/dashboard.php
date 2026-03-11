@@ -1,242 +1,92 @@
-<?= $this->include('templates/headeradmin') ?>
+<?= $this->extend('admin/layout') ?>
 
+<?= $this->section('content') ?>
 
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom">
+    <h1 class="h2">Admin Dashboard</h1>
+</div>
 
-
-
-
-
-            <main class="main-content p-4">
-
-
-
-         <!-- first row  single column  -->
-
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-
-                    <h1 class="h2">Admin Dashboard</h1>
-
-                </div>
-
-         <!-- second row with four columns -->
-
-                   <div class="row mb-4">
-
-                  <!-- first column    -->
-
-                    <div class="col-md-3">
-
-                        <div class="card text-white bg-primary mb-3">
-
-                            <div class="card-body">
-
-                                <h5 class="card-title">Admission Form</h5>
-
-                                <p class="card-text h4">Fill Admission Form</p>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                <!-- second column -->
-
-                    <div class="col-md-3">
-
-                        <div class="card text-white bg-success mb-3">
-
-                            <div class="card-body">
-
-                                <h5 class="card-title">Student List</h5>
-
-                                <p class="card-text h2">100</p>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                <!-- third column -->
-
-                    <div class="col-md-3">
-
-                        <div class="card text-white bg-warning mb-3">
-
-                            <div class="card-body">
-
-                                <h5 class="card-title">Edit Student</h5>
-
-                                <p class="card-text h2">16</p>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                <!-- fourth column -->
-
-                    <div class="col-sm-6 col-md-4 col-lg-3">
-
-                        <a href="<?= site_url('admin/change-password') ?>" class="text-decoration-none">
-
-                            <div class="card text-white bg-primary hover-shadow">
-
-                            <div class="card-body text-center">
-
-                            <h5 class="card-title">Admin</h5>
-
-                            <p class="card-text">Change Password</p>
-
-                            </div>
-
-                            </div>
-
-                        </a>
-
-                    </div>
-
-            </div>
-
-    <!--   new row for subject Paper I-->
-
-
-
-            <div class="row mb-4">
-
-                <!-- first column -->
-
-                    <div class="col-sm-6 col-md-4 col-lg-3">
-
-                        <a href="<?= base_url('admin/admission/create') ?>" class="text-decoration-none">
-
-  			
-
-                            <div class="card text-white bg-primary hover-shadow">
-
-                            <div class="card-body text-center">
-
-                            <h5 class="card-title">Admission Form</h5>
-
-                            <p class="card-text">Click here</p>
-
-                            </div>
-
-                            </div>
-
-                        </a>
-
-                    </div>
-
-
-
-                      <div class="col-sm-6 col-md-4 col-lg-3">
-
-                        <a href="<?= base_url('admin/admission') ?>" class="text-decoration-none">
-
-                            <div class="card text-white bg-success hover-shadow">
-
-                            <div class="card-body text-center">
-
-                            <h5 class="card-title">Student List</h5>
-
-                            <p class="card-text">Click Here</p>
-
-                            </div>
-
-                            </div>
-
-                        </a>
-
-                    </div>
-
-                <!-- Gallery column -->
-
-                      <div class="col-sm-6 col-md-4 col-lg-3">
-
-                        <a href="<?= base_url('admin/gallery') ?>" class="text-decoration-none">
-
-                            <div class="card text-white bg-info hover-shadow">
-
-                            <div class="card-body text-center">
-
-                            <h5 class="card-title">Gallery</h5>
-
-                            <p class="card-text">Manage Images</p>
-
-                            </div>
-
-                            </div>
-
-                        </a>
-
-                    </div>
-
-                <!-- third column -->
-                      <div class="col-sm-6 col-md-4 col-lg-3">
-
-                        <a href="your-link.html" class="text-decoration-none">
-
-                            <div class="card text-white bg-warning hover-shadow">
-
-                            <div class="card-body text-center">
-
-                            <h5 class="card-title">Paper I</h5>
-
-                            <p class="card-text">Fundamental of Computers</p>
-
-                            </div>
-
-                            </div>
-
-                        </a>
-
-                    </div>
-
-                <!-- fourth column -->
-
-                      <div class="col-sm-6 col-md-4 col-lg-3">
-
-                        <a href="your-link.html" class="text-decoration-none">
-
-                            <div class="card text-white bg-danger hover-shadow">
-
-                            <div class="card-body text-center">
-
-                            <h5 class="card-title">Paper I</h5>
-
-                            <p class="card-text">IT trends</p>
-
-                            </div>
-
-                            </div>
-
-                        </a>
-
-                    </div>
-
-            </div>
-
-
-
-
-
-
-
-               </main>
-
-        </div>
-
-    </div>
-
-
-
-
-
+<!-- Dashboard Cards Grid - 6 Cards -->
+<div class="row g-3">
     
+    <!-- 1. Admission Form -->
+    <div class="col-12 col-sm-6 col-md-4">
+        <a href="<?= base_url('admin/admission/create') ?>" class="text-decoration-none">
+            <div class="card text-white bg-primary h-100 hover-shadow border-0">
+                <div class="card-body text-center d-flex flex-column justify-content-center" style="min-height: 150px;">
+                    <i class="bi bi-pencil-square fs-1 mb-2"></i>
+                    <h5 class="card-title">Admission Form</h5>
+                    <p class="card-text">Create New Admission</p>
+                </div>
+            </div>
+        </a>
+    </div>
+    
+    <!-- 2. Students List -->
+    <div class="col-12 col-sm-6 col-md-4">
+        <a href="<?= base_url('admin/admission') ?>" class="text-decoration-none">
+            <div class="card text-white bg-success h-100 hover-shadow border-0">
+                <div class="card-body text-center d-flex flex-column justify-content-center" style="min-height: 150px;">
+                    <i class="bi bi-people fs-1 mb-2"></i>
+                    <h5 class="card-title">Students List</h5>
+                    <p class="card-text">View All Students</p>
+                </div>
+            </div>
+        </a>
+    </div>
+    
+    <!-- 3. Gallery -->
+    <div class="col-12 col-sm-6 col-md-4">
+        <a href="<?= base_url('admin/gallery') ?>" class="text-decoration-none">
+            <div class="card text-white bg-info h-100 hover-shadow border-0">
+                <div class="card-body text-center d-flex flex-column justify-content-center" style="min-height: 150px;">
+                    <i class="bi bi-images fs-1 mb-2"></i>
+                    <h5 class="card-title">Gallery</h5>
+                    <p class="card-text">Manage Images</p>
+                </div>
+            </div>
+        </a>
+    </div>
+    
+    <!-- 4. Fees Pending Report -->
+    <div class="col-12 col-sm-6 col-md-4">
+        <a href="<?= site_url('admin/fees_total_report') ?>" class="text-decoration-none">
+            <div class="card text-white bg-warning h-100 hover-shadow border-0">
+                <div class="card-body text-center d-flex flex-column justify-content-center" style="min-height: 150px;">
+                    <i class="bi bi-bar-chart-line fs-1 mb-2"></i>
+                    <h5 class="card-title">Fees Report</h5>
+                    <p class="card-text">Pending Fees</p>
+                </div>
+            </div>
+        </a>
+    </div>
+    
+    <!-- 5. Add Fees -->
+    <div class="col-12 col-sm-6 col-md-4">
+        <a href="<?= base_url('admin/fees/create') ?>" class="text-decoration-none">
+            <div class="card text-white bg-danger h-100 hover-shadow border-0">
+                <div class="card-body text-center d-flex flex-column justify-content-center" style="min-height: 150px;">
+                    <i class="bi bi-plus-circle fs-1 mb-2"></i>
+                    <h5 class="card-title">Add Fees</h5>
+                    <p class="card-text">Record New Fee</p>
+                </div>
+            </div>
+        </a>
+    </div>
+    
+    <!-- 6. Notice -->
+    <div class="col-12 col-sm-6 col-md-4">
+        <a href="<?= base_url('admin/notice') ?>" class="text-decoration-none">
+            <div class="card text-white bg-secondary h-100 hover-shadow border-0">
+                <div class="card-body text-center d-flex flex-column justify-content-center" style="min-height: 150px;">
+                    <i class="bi bi-megaphone fs-1 mb-2"></i>
+                    <h5 class="card-title">Notices</h5>
+                    <p class="card-text">Manage Notices</p>
+                </div>
+            </div>
+        </a>
+    </div>
+    
+</div>
 
-
-
-<?= $this->include('templates/footerdash') ?>
+<?= $this->endSection() ?>

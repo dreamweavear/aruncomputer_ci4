@@ -1,4 +1,6 @@
-<?= $this->include('templates/headeradmin') ?>
+<?= $this->extend('admin/layout') ?>
+
+<?= $this->section('content') ?>
 
 <div class="container my-4">
     <?php $isEdit = isset($item); ?>
@@ -48,4 +50,4 @@
     </form>
 </div>
 
-<?= $this->include('templates/footerdash') ?>
+<?= $this->endSection() ?>

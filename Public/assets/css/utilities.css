@@ -41,6 +41,24 @@
     box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
 }
 
+/* Dashboard Card Hover - Smooth lift effect */
+.hover-shadow {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+}
+
+.hover-shadow:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Hover effect when card is wrapped in link */
+a .hover-shadow:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
 /* ===== BUTTON STYLES ===== */
 .btn-primary-custom {
     background-color: var(--secondary-color);
