@@ -28,7 +28,8 @@ class SitemapController extends BaseController
             base_url('academics'),
             base_url('admissionpage'),
             base_url('contact'),
-            base_url('student-content')
+            base_url('student-content'),
+            base_url('privacy-policy')
         ];
 
         foreach ($staticPages as $url) {

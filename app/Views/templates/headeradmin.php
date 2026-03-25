@@ -470,6 +470,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
               </a></li>
 
+              <li><hr class="dropdown-divider my-1"></li>
+
+              <li><a class="dropdown-item py-2" href="<?= base_url('privacy-policy') ?>">
+
+                <i class="bi bi-shield-lock text-primary me-2"></i> Privacy Policy
+
+              </a></li>
+
         </ul>
 
       </li>                     
@@ -485,6 +493,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 <i class="bi bi-telephone-outbound-fill me-2"></i>
 
                 <span>Contact Us</span>   </a>
+
+            </li>
+
+            <li class="nav-item mx-1">
+
+                <a class="nav-link text-white d-flex align-items-center py-2 px-3 rounded" href="<?= base_url('privacy-policy') ?>">
+
+                <i class="bi bi-shield-lock-fill me-2"></i>
+
+                <span>Privacy Policy</span>   </a>
 
             </li>
 

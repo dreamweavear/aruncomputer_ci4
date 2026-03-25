@@ -25,6 +25,8 @@ $routes->post('admin/admission/store', 'Admin\Admission::store');
 $routes->post('admin/admission/update/(:num)', 'Admin\Admission::update/$1');
 $routes->get('admin/admission/edit/(:num)', 'Admin\Admission::edit/$1');
 $routes->post('admin/admission/delete/(:num)', 'Admin\Admission::delete/$1'); // ✅ FIXED
+$routes->get('admin/admission/testWhatsApp/(:any)', 'Admin\Admission::testWhatsApp/$1');
+$routes->get('admin/admission/testWhatsApp', 'Admin\Admission::testWhatsApp');
 
 // admin dashboard
 $routes->get('admin/dashboard', 'Admin\AdminDashboard::index');
@@ -145,6 +147,7 @@ $routes->get('student/chapter/exportPdf/(:segment)', 'Student\Chapter::exportpdf
 
 // static pages (keep last)
 $routes->get('pages', [Pages::class, 'index']);
+$routes->get('privacy-policy', 'Pages::view/privacy_policy');
 $routes->get('(:segment)', [Pages::class, 'view']);
 
 $routes->setAutoRoute(true);

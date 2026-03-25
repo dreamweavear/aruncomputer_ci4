@@ -144,6 +144,14 @@
 
         </div>
 
+        <div class="d-flex align-items-center">
+
+          <a href="<?= base_url('privacy-policy') ?>" class="text-white text-decoration-none small">
+            <i class="bi bi-shield-lock me-1"></i>Privacy Policy
+          </a>
+
+        </div>
+
       </div>
 
     </div>
@@ -166,11 +174,19 @@
 
                 // Toggle sidebar
 
-                document.getElementById('sidebarToggle').addEventListener('click', function() {
+                const sidebarToggleBtn = document.getElementById('sidebarToggle');
 
-                    document.getElementById('sidebar').classList.toggle('collapsed');
+                if (sidebarToggleBtn) {
 
-                });
+                    sidebarToggleBtn.addEventListener('click', function() {
+
+                        const sidebarEl = document.getElementById('sidebar');
+
+                        if (sidebarEl) sidebarEl.classList.toggle('collapsed');
+
+                    });
+
+                }
 
                 // Activate sidebar links
 

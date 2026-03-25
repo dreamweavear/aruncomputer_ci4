@@ -1067,126 +1067,97 @@ public function create()
  */
 
 private function sendWhatsAppMessage($studentData)
-
 {
-
     try {
-
-        // Format phone number (add 91 if 10 digits)
-
+        // Phone number format karo
         $phone = preg_replace('/\D/', '', $studentData['phone']);
-
         if (strlen($phone) === 10) {
-
             $phone = '91' . $phone;
-
         }
 
-        
-
-        // Generate student ID
-
+        // Student ID generate karo
         $studentId = 'ARUN' . date('Ymd') . rand(100, 999);
 
-        
+        // Meta API credentials (.env se load)
+        $accessToken   = env('WHATSAPP_TOKEN');
+        $phoneNumberId = env('WHATSAPP_PHONE_NUMBER_ID');
 
-        // Create WhatsApp message
+        $url = 'https://graph.facebook.com/v22.0/' . $phoneNumberId . '/messages';
 
-        $message = $this->createWhatsAppMessage($studentData, $studentId);
-
-        
-
-        // Send to WhatsApp bot API
-
-        $url = 'https://arun-whatsapp-bot-production.up.railway.app/send';
-
-        $data = json_encode([
-
-            'phone' => $phone,
-
-            'message' => $message
-
+        $payload = json_encode([
+            'messaging_product' => 'whatsapp',
+            'to' => $phone,
+            'type' => 'template',
+            'template' => [
+                'name' => 'hello_world',
+                'language' => ['code' => 'en_US']
+            ]
         ]);
-
-        
 
         $ch = curl_init($url);
-
         curl_setopt_array($ch, [
-
             CURLOPT_RETURNTRANSFER => true,
-
-            CURLOPT_POST => true,
-
-            CURLOPT_POSTFIELDS => $data,
-
-            CURLOPT_HTTPHEADER => [
-
+            CURLOPT_POST          => true,
+            CURLOPT_POSTFIELDS    => $payload,
+            CURLOPT_HTTPHEADER    => [
+                'Authorization: Bearer ' . $accessToken,
                 'Content-Type: application/json',
-
-                'Content-Length: ' . strlen($data)
-
             ],
-
-            CURLOPT_TIMEOUT => 10
-
+            CURLOPT_TIMEOUT          => 15,
+            CURLOPT_SSL_VERIFYPEER   => false,   // XAMPP Windows SSL fix
+            CURLOPT_SSL_VERIFYHOST   => false,
         ]);
 
-        
-
-        $response = curl_exec($ch);
-
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
+        $response  = curl_exec($ch);
+        $httpCode  = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $curlError = curl_error($ch);
         curl_close($ch);
 
-        
-
-        if ($httpCode == 200) {
-
-            $result = json_decode($response, true);
-
-            return [
-
-                'success' => $result['success'],
-
-                'student_id' => $studentId,
-
-                'message' => 'WhatsApp sent successfully'
-
-            ];
-
+        // cURL itself failed (SSL, timeout, network)
+        if ($response === false) {
+            log_message('error', 'WhatsApp cURL error: ' . $curlError . ' | Phone: ' . $phone);
+            return ['success' => false, 'error' => 'cURL error: ' . $curlError];
         }
 
-        
+        // Meta returns 200 on success
+        if ($httpCode === 200) {
+            log_message('info', 'WhatsApp sent OK to ' . $phone . ' | ' . $response);
+            return [
+                'success'    => true,
+                'student_id' => $studentId,
+                'message'    => 'WhatsApp sent successfully'
+            ];
+        }
 
+        // Log full response so we can debug
+        log_message('error', 'WhatsApp HTTP ' . $httpCode . ' | Phone: ' . $phone . ' | Response: ' . $response);
         return [
-
             'success' => false,
-
-            'error' => 'WhatsApp API error'
-
+            'error'   => 'HTTP ' . $httpCode . ': ' . $response
         ];
-
-        
 
     } catch (\Exception $e) {
-
         log_message('error', 'WhatsApp exception: ' . $e->getMessage());
-
-        return [
-
-            'success' => false,
-
-            'error' => $e->getMessage()
-
-        ];
-
+        return ['success' => false, 'error' => $e->getMessage()];
     }
-
 }
 
+/**
+ * Test WhatsApp API - browser mein kholo: /admin/admission/testWhatsApp/9XXXXXXXXXX
+ */
+public function testWhatsApp($phone = '917000000000')
+{
+    $authCheck = $this->checkAdminAuth();
+    if ($authCheck !== true) return $authCheck;
 
+    $result = $this->sendWhatsAppMessage(['phone' => $phone]);
+
+    echo '<pre style="font-size:14px; background:#f5f5f5; padding:20px;">';
+    echo '<b>Phone tested:</b> ' . $phone . "\n\n";
+    echo '<b>Result:</b>' . "\n";
+    print_r($result);
+    echo '</pre>';
+}
 
 /**
 

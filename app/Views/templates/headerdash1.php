@@ -357,6 +357,10 @@ img, video {
 
             <li><a class="dropdown-item" href="#"><i class="bi bi-people text-secondary me-2"></i>Alumni</a></li>
 
+            <li><hr class="dropdown-divider my-1"></li>
+
+            <li><a class="dropdown-item" href="<?= base_url('privacy-policy') ?>"><i class="bi bi-shield-lock text-primary me-2"></i>Privacy Policy</a></li>
+
           </ul>
 
         </li>
