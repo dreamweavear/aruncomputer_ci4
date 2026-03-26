@@ -64,10 +64,23 @@ abstract class BaseController extends Controller
      */
     protected function checkAdminAuth()
     {
-        $session = session();
+        $session  = session();
+        $timeout  = 7200; // 2 hours in seconds
+
         if (!$session->get('isLoggedIn')) {
             return redirect()->to('/login');
         }
+
+        // Last activity check - 2 hours inactivity pe auto logout
+        $lastActivity = $session->get('last_activity');
+        if ($lastActivity && (time() - $lastActivity) > $timeout) {
+            $session->destroy();
+            return redirect()->to('/login')->with('error', 'Session expired. Please login again.');
+        }
+
+        // Har request pe last activity update karo
+        $session->set('last_activity', time());
+
         return true;
     }
 }

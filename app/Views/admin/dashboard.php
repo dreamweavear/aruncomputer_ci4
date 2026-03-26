@@ -86,7 +86,20 @@
             </div>
         </a>
     </div>
-    
+
+    <!-- 7. Enquiries -->
+    <div class="col-12 col-sm-6 col-md-4">
+        <a href="<?= base_url('admin/enquiries') ?>" class="text-decoration-none">
+            <div class="card text-white h-100 hover-shadow border-0" style="background-color:#6f42c1;">
+                <div class="card-body text-center d-flex flex-column justify-content-center" style="min-height: 150px;">
+                    <i class="bi bi-envelope-open fs-1 mb-2"></i>
+                    <h5 class="card-title">Enquiries</h5>
+                    <p class="card-text">View Student Enquiries</p>
+                </div>
+            </div>
+        </a>
+    </div>
+
 </div>
 
 <?= $this->endSection() ?>

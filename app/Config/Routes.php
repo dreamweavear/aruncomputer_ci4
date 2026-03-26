@@ -125,6 +125,11 @@ $routes->get('sitemap.xml', 'SitemapController::index');
 
 
 
+// enquiries
+$routes->get('admin/enquiries', 'Admin\Enquiry::index');
+$routes->get('admin/enquiries/view/(:num)', 'Admin\Enquiry::view/$1');
+$routes->get('admin/enquiries/delete/(:num)', 'Admin\Enquiry::delete/$1');
+
 // notices
 $routes->get('admin/notice', 'Admin\Notice::index');
 $routes->get('admin/notice/create', 'Admin\Notice::create');

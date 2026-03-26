@@ -17,7 +17,6 @@ use App\Models\Academic\CourseModel;
 class Admission extends BaseController
 
 
-
 {
 
     // ✅ Email configuration property add करें
@@ -346,8 +345,9 @@ public function create()
 
      // ✅ SEND WHATSAPP MESSAGE
 
-    $whatsappResult = $this->sendWhatsAppMessage($data);
+    // $whatsappResult = $this->sendWhatsAppMessage($data);
 
+    $whatsappResult = $this->sendWhatsAppMessage($data, $studentId);
     
 
     // ✅ SEND EMAIL
@@ -1066,7 +1066,8 @@ public function create()
 
  */
 
-private function sendWhatsAppMessage($studentData)
+//private function sendWhatsAppMessage($studentData)
+private function sendWhatsAppMessage($studentData, $dbStudentId = null)
 {
     try {
         // Phone number format karo
@@ -1076,7 +1077,10 @@ private function sendWhatsAppMessage($studentData)
         }
 
         // Student ID generate karo
-        $studentId = 'ARUN' . date('Ymd') . rand(100, 999);
+        //$studentId = 'ARUN' . date('Ymd') . rand(100, 999);
+
+        $studentId = 'ARUN' . ($dbStudentId ?? date('Ymd') . rand(100, 999));
+
 
         // Meta API credentials (.env se load)
         $accessToken   = env('WHATSAPP_TOKEN');
@@ -1084,6 +1088,9 @@ private function sendWhatsAppMessage($studentData)
 
         $url = 'https://graph.facebook.com/v22.0/' . $phoneNumberId . '/messages';
 
+// nayee template ke liye ise hataya isek neeche naye message template dala         
+
+/*
         $payload = json_encode([
             'messaging_product' => 'whatsapp',
             'to' => $phone,
@@ -1093,6 +1100,35 @@ private function sendWhatsAppMessage($studentData)
                 'language' => ['code' => 'en_US']
             ]
         ]);
+  */
+        
+ $payload = json_encode([
+    'messaging_product' => 'whatsapp',
+    'to' => $phone,
+    'type' => 'template',
+    'template' => [
+        'name' => 'admission_confirmation',
+        //'language' => ['code' => 'en'],
+        'language' => ['code' => 'en_US'],
+        'components' => [[
+            'type' => 'body',
+            'parameters' => [
+                ['type' => 'text', 'text' => $studentData['name']],
+                ['type' => 'text', 'text' => $studentId],
+                ['type' => 'text', 'text' => $studentData['course']],
+                ['type' => 'text', 'text' => $studentData['admission_date']],
+                ['type' => 'text', 'text' => $studentData['course_fee']],
+                ['type' => 'text', 'text' => $studentData['discount']],
+                ['type' => 'text', 'text' => $studentData['admission_fee']],
+                ['type' => 'text', 'text' => $studentData['receipt_number']],
+                
+            ]
+        ]]
+    ]
+]);   
+
+
+
 
         $ch = curl_init($url);
         curl_setopt_array($ch, [
@@ -1145,6 +1181,8 @@ private function sendWhatsAppMessage($studentData)
 /**
  * Test WhatsApp API - browser mein kholo: /admin/admission/testWhatsApp/9XXXXXXXXXX
  */
+
+/*
 public function testWhatsApp($phone = '917000000000')
 {
     $authCheck = $this->checkAdminAuth();
@@ -1158,13 +1196,32 @@ public function testWhatsApp($phone = '917000000000')
     print_r($result);
     echo '</pre>';
 }
+    */
+
+public function testWhatsApp($phone = '919926542408')
+{
+    $authCheck = $this->checkAdminAuth();
+    if ($authCheck !== true) return $authCheck;
+
+    $testData = [
+        'phone'          => $phone,
+        'name'           => 'Test Student',
+        'course'         => 'DCA',
+        'admission_date' => '2026-03-26',
+        'course_fee'     => '5000',
+        'discount'       => '500',
+        'admission_fee'  => '2000',
+        'receipt_number' => 'REC001',
+    ];
+
+    $result = $this->sendWhatsAppMessage($testData, 99);
+
+    return $this->response->setJSON($result);
+}
 
 /**
-
  * Create WhatsApp message template
-
  */
-
 private function createWhatsAppMessage($data, $studentId)
 
 {
