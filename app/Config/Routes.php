@@ -103,6 +103,10 @@ $routes->get('student-content/(:segment)', 'Academic\StudentContentController::v
 
 $routes->get('admin/chapters/getUnitsByPaper', 'Admin\ChapterController::getUnitsByPaper');
 
+// ID card print
+$routes->get('admin/idcard/print/(:num)', 'Admin\IdCard::print/$1');
+$routes->post('admin/idcard/bulk', 'Admin\IdCard::bulk');
+
 // fees
 $routes->get('admin/fees', 'Admin\Fees::index');
 $routes->get('admin/fees/create', 'Admin\Fees::create');
