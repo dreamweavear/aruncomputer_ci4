@@ -132,6 +132,21 @@ $routes->get('sitemap.xml', 'SitemapController::index');
 // reports
 $routes->get('admin/reports/fee-pending', 'Admin\Reports::feePending');
 
+// exam results
+$routes->get('admin/exam', 'Admin\ExamResult::index');
+$routes->get('admin/exam/create/(:num)', 'Admin\ExamResult::create/$1');
+$routes->post('admin/exam/store', 'Admin\ExamResult::store');
+$routes->get('admin/exam/edit/(:num)', 'Admin\ExamResult::edit/$1');
+$routes->post('admin/exam/update/(:num)', 'Admin\ExamResult::update/$1');
+$routes->get('admin/exam/certificate/(:num)', 'Admin\ExamResult::generateCertificate/$1');
+
+// certificates
+$routes->get('admin/certificate/print/(:num)', 'Admin\Certificate::print/$1');
+$routes->get('admin/certificate/reprint/(:num)', 'Admin\Certificate::reprint/$1');
+
+// student certificate download
+$routes->get('student/certificate/(:num)', 'Student\Certificate::view/$1');
+
 // enquiries
 $routes->get('admin/enquiries', 'Admin\Enquiry::index');
 $routes->get('admin/enquiries/view/(:num)', 'Admin\Enquiry::view/$1');

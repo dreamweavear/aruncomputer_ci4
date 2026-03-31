@@ -706,6 +706,32 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
+                <!-- Exam & Certificate Section -->
+
+                    <li class="nav-item mt-3">
+
+                     <span class="nav-link text-uppercase small fw-bold text-muted">
+
+                     <i class="bi bi-award me-2"></i> Exam &amp; Certificate
+
+                 </span>
+
+                </li>
+
+
+
+            <li class="nav-item">
+
+              <a class="nav-link sidebar-link p-2 admin-close" href="<?= base_url('admin/exam') ?>">
+
+                <i class="bi bi-clipboard2-check me-2"></i> Exam Results
+
+              </a>
+
+            </li>
+
+
+
                 
 
                 <!-- Gallery Section -->

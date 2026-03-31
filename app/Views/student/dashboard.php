@@ -121,6 +121,69 @@
     </div>
   </div>
 
+
+  <!-- EXAM RESULT & CERTIFICATE SECTION -->
+  <div class="row g-4 mt-1">
+    <div class="col-12">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white fw-bold">
+          <i class="bi bi-clipboard2-check me-2"></i>Exam Result &amp; Certificate
+        </div>
+        <div class="card-body">
+          <?php if (!empty($exam_result)): ?>
+            <?php
+              $_grade = $exam_result['grade'];
+              $_passed = ($_grade !== 'F');
+              $_gb = match(true) {
+                  $_grade === 'A+' => 'success', $_grade === 'A' => 'primary',
+                  $_grade === 'B' => 'info', $_grade === 'C' => 'warning',
+                  $_grade === 'D' => 'secondary', default => 'danger',
+              };
+              $_gl = ['A+'=>'Excellent','A'=>'Very Good','B'=>'Good','C'=>'Fair','D'=>'Satisfactory','F'=>'Fail'][$_grade] ?? '';
+            ?>
+            <div class="row align-items-center g-3">
+              <div class="col-md-8">
+                <table class="table table-bordered mb-0">
+                  <tr><th width="160">Theory Marks</th><td><?= esc($exam_result['theory_marks']) ?>/50</td></tr>
+                  <tr><th>Practical Marks</th><td><?= esc($exam_result['practical_marks']) ?>/50</td></tr>
+                  <tr><th>Total Marks</th><td><?= esc($exam_result['total_marks']) ?>/100</td></tr>
+                  <tr><th>Percentage</th><td><?= esc($exam_result['percentage']) ?>%</td></tr>
+                  <tr><th>Grade</th><td><span class="badge bg-<?= $_gb ?> fs-6"><?= esc($_grade) ?> — <?= $_gl ?></span></td></tr>
+                  <tr><th>Exam Date</th><td><?= $exam_result['exam_date'] ? date('d M Y', strtotime($exam_result['exam_date'])) : '—' ?></td></tr>
+                  <tr><th>Attempt</th><td><?= esc($exam_result['attempt']) ?> of 2</td></tr>
+                </table>
+              </div>
+              <div class="col-md-4 text-center">
+                <?php if ($_passed): ?>
+                  <div class="display-6 text-success mb-2"><i class="bi bi-patch-check-fill"></i></div>
+                  <div class="fw-bold text-success fs-5 mb-2">Passed!</div>
+                  <?php if (!empty($certificate)): ?>
+                    <div class="alert alert-success py-2 px-3 mb-2"><i class="bi bi-award me-1"></i>Certificate Issued<br><small><?= esc($certificate['certificate_no']) ?></small></div>
+                    <a href="<?= site_url('student/certificate/' . $certificate['id']) ?>" class="btn btn-success btn-sm w-100" target="_blank"><i class="bi bi-download me-1"></i>Download Certificate</a>
+                  <?php else: ?>
+                    <div class="alert alert-info py-2 px-3"><i class="bi bi-info-circle me-1"></i>Certificate not yet issued. Contact the institute.</div>
+                  <?php endif; ?>
+                <?php else: ?>
+                  <div class="display-6 text-danger mb-2"><i class="bi bi-x-circle-fill"></i></div>
+                  <div class="fw-bold text-danger fs-5 mb-2">Failed</div>
+                  <?php if ((int)$exam_result['attempt'] < 2): ?>
+                    <div class="alert alert-warning py-2 px-3"><i class="bi bi-arrow-repeat me-1"></i>You can attempt again. Contact the institute.</div>
+                  <?php else: ?>
+                    <div class="alert alert-danger py-2 px-3"><i class="bi bi-slash-circle me-1"></i>Maximum attempts reached.</div>
+                  <?php endif; ?>
+                <?php endif; ?>
+              </div>
+            </div>
+          <?php else: ?>
+            <div class="text-center py-4 text-muted">
+              <i class="bi bi-hourglass-split fs-2 mb-2 d-block"></i>
+              <p>Exam result not yet available. Your result will appear here after the examination.</p>
+            </div>
+          <?php endif; ?>
+        </div>
+      </div>
+    </div>
+  </div>
 </main>
 
 </div> <!-- /.content-wrapper (opened in sidebar_content) -->
