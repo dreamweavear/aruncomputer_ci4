@@ -129,6 +129,9 @@ $routes->get('sitemap.xml', 'SitemapController::index');
 
 
 
+// reports
+$routes->get('admin/reports/fee-pending', 'Admin\Reports::feePending');
+
 // enquiries
 $routes->get('admin/enquiries', 'Admin\Enquiry::index');
 $routes->get('admin/enquiries/view/(:num)', 'Admin\Enquiry::view/$1');

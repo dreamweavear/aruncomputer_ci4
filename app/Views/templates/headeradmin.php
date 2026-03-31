@@ -680,7 +680,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             <li class="nav-item">
 
-              <a class="nav-link p-2 admin-close" href="<?= site_url('admin/fees_total_report') ?>">
+              <a class="nav-link sidebar-link p-2 admin-close" href="<?= site_url('admin/fees_total_report') ?>">
 
                 <i class="fas fa-file-invoice-dollar me-2"></i> Fees Pending Report
 
@@ -696,11 +696,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
             <li class="nav-item">
 
-              <a class="nav-link d-flex align-items-center gap-2 py-2 px-3 rounded bg-gradient text-white fw-semibold shadow-sm admin-close"
+              <a class="nav-link sidebar-link p-2 admin-close" href="<?= base_url('admin/reports/fee-pending') ?>">
 
-                 href="<?= site_url('admin/fees_total_report') ?>" style="background-color:#0078d4;">
-
-                <i class="bi bi-bar-chart-line"></i> Total Fees Report
+                <i class="bi bi-bar-chart-line me-2"></i> Fee Pending Report
 
               </a>
 

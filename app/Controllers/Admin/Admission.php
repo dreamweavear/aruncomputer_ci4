@@ -121,7 +121,30 @@ public function index()
 
     $data['students'] = $builder->get()->getResultArray();
 
+    // Add paid/pending fee data for each student (from fees table)
+    if (!empty($data['students'])) {
+        $studentIds = array_column($data['students'], 'id');
+        $placeholders = implode(',', array_fill(0, count($studentIds), '?'));
+        $feeRows = $db->query(
+            "SELECT student_id, COALESCE(SUM(amount),0) as paid_amount
+             FROM fees WHERE status='Paid' AND student_id IN ({$placeholders})
+             GROUP BY student_id",
+            $studentIds
+        )->getResultArray();
 
+        $feePaid = [];
+        foreach ($feeRows as $f) {
+            $feePaid[$f['student_id']] = $f['paid_amount'];
+        }
+
+        foreach ($data['students'] as &$s) {
+            $s['paid_amount']    = $feePaid[$s['id']] ?? 0;
+            $totalFee            = ($s['course_fee'] ?? 0) - ($s['discount'] ?? 0);
+            $s['total_fee']      = max(0, $totalFee);
+            $s['pending_amount'] = max(0, $totalFee - $s['paid_amount']);
+        }
+        unset($s);
+    }
 
     // Send selected values to view
 

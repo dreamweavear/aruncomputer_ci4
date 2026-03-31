@@ -134,11 +134,11 @@
 
     <tbody>
 
-        <?php foreach ($fees as $fee): ?>
+        <?php $loop = 1; foreach ($fees as $fee): ?>
 
             <tr>
 
-                <td><?= $fee['id'] ?></td>
+                <td><?= $loop++ ?></td>
 
                 <td><?= $fee['student_id'] ?></td>
 

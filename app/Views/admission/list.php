@@ -31,6 +31,9 @@
             <button type="button" class="btn btn-outline-secondary btn-sm" onclick="toggleAll(this)">
                 Select All
             </button>
+            <a href="<?= base_url('admin/reports/fee-pending') ?>" class="btn btn-warning btn-sm">
+                &#128203; Fee Pending Report
+            </a>
         </div>
 
         <!-- Filter form -->
@@ -78,16 +81,27 @@
                   <th style="width:36px;">
                       <input type="checkbox" id="checkAll" title="Select all" onchange="toggleCheckboxes(this)">
                   </th>
+                  <th style="width:46px;">S.No.</th>
                   <th>ID</th><th>Name</th><th>Father</th><th>Course</th><th>DOB</th>
-                  <th>Phone</th><th>Email</th><th>Photo</th><th>Action</th>
+                  <th>Phone</th><th>Email</th>
+                  <th>Adm. Date</th>
+                  <th class="text-end">Total Fee</th>
+                  <th class="text-end">Paid</th>
+                  <th class="text-end">Pending</th>
+                  <th>Photo</th><th>Action</th>
                 </tr>
               </thead>
               <tbody>
-                <?php foreach($students as $s): ?>
-                <tr>
+                <?php $sno = 1; foreach($students as $s): ?>
+                <?php
+                    $pending = $s['pending_amount'] ?? 0;
+                    $rowClass = ($pending > 0) ? 'table-warning' : '';
+                ?>
+                <tr class="<?= $rowClass ?>">
                   <td>
                       <input type="checkbox" name="ids[]" value="<?= $s['id'] ?>" class="row-check">
                   </td>
+                  <td class="text-center text-muted"><?= $sno++ ?></td>
                   <td><?= esc($s['id']) ?></td>
                   <td><?= esc($s['name']) ?></td>
                   <td><?= esc($s['father_name']) ?></td>
@@ -95,6 +109,12 @@
                   <td><?= esc($s['dob']) ?></td>
                   <td><?= esc($s['phone']) ?></td>
                   <td><?= esc($s['email']) ?></td>
+                  <td><?= esc($s['admission_date'] ?? '-') ?></td>
+                  <td class="text-end">&#8377;<?= number_format($s['total_fee'] ?? 0, 0) ?></td>
+                  <td class="text-end text-success fw-bold">&#8377;<?= number_format($s['paid_amount'] ?? 0, 0) ?></td>
+                  <td class="text-end <?= ($pending > 0) ? 'text-danger fw-bold' : 'text-success' ?>">
+                      &#8377;<?= number_format($pending, 0) ?>
+                  </td>
                   <td>
                     <img src="<?= base_url('uploads/' . $s['photo']) ?>" width="50" alt="photo" class="img-thumbnail">
                   </td>
