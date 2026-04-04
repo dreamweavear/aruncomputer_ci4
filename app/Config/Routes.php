@@ -172,6 +172,38 @@ $routes->post('admin/chapters/uploadImage', 'Admin\ChapterController::uploadImag
 // PDF
 $routes->get('student/chapter/exportPdf/(:segment)', 'Student\Chapter::exportpdf/$1');
 
+// -------------------------
+// ALUMNI
+// -------------------------
+$routes->group('admin/alumni', function ($routes) {
+    $routes->get('/',                  'Admin\Alumni::index');
+    $routes->get('create',             'Admin\Alumni::create');
+    $routes->post('store',             'Admin\Alumni::store');
+    $routes->get('edit/(:num)',        'Admin\Alumni::edit/$1');
+    $routes->post('update/(:num)',     'Admin\Alumni::update/$1');
+    $routes->post('delete/(:num)',     'Admin\Alumni::delete/$1');
+    $routes->get('import',             'Admin\Alumni::import');
+    $routes->post('import-process',    'Admin\Alumni::importProcess');
+});
+
+// -------------------------
+// BULK WHATSAPP MESSAGE
+// -------------------------
+$routes->get( 'admin/bulk-message',               'Admin\BulkMessage::index');
+$routes->post('admin/bulk-message/recipient-count','Admin\BulkMessage::recipientCount');
+$routes->post('admin/bulk-message/send',           'Admin\BulkMessage::send');
+
+// -------------------------
+// BIRTHDAY REMINDER
+// -------------------------
+$routes->get( 'admin/birthday-reminder',      'Admin\BirthdayReminder::index');
+$routes->post('admin/birthday-reminder/send', 'Admin\BirthdayReminder::sendTodayBirthdays');
+
+// -------------------------
+// MESSAGE LOGS
+// -------------------------
+$routes->get('admin/message-logs', 'Admin\MessageLogs::index');
+
 // static pages (keep last)
 $routes->get('pages', [Pages::class, 'index']);
 $routes->get('privacy-policy', 'Pages::view/privacy_policy');

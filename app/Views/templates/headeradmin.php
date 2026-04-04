@@ -939,6 +939,50 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
+            <!-- Bulk Messaging Section -->
+            <li class="nav-item mt-3">
+              <span class="nav-link text-uppercase small fw-bold text-muted">
+                <i class="bi bi-whatsapp me-2 text-success"></i> Bulk Messaging
+              </span>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link sidebar-link p-2 admin-close" href="<?= base_url('admin/bulk-message') ?>">
+                <i class="bi bi-megaphone me-2 text-success"></i> Bulk WhatsApp
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link sidebar-link p-2 admin-close" href="<?= base_url('admin/birthday-reminder') ?>">
+                <i class="bi bi-balloon-heart me-2 text-warning"></i> Birthday Reminder
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link sidebar-link p-2 admin-close" href="<?= base_url('admin/message-logs') ?>">
+                <i class="bi bi-clock-history me-2 text-secondary"></i> Message Logs
+              </a>
+            </li>
+
+            <!-- Alumni Section -->
+            <li class="nav-item mt-3">
+              <span class="nav-link text-uppercase small fw-bold text-muted">
+                <i class="bi bi-mortarboard me-2"></i> Alumni
+              </span>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link sidebar-link p-2 admin-close" href="<?= base_url('admin/alumni') ?>">
+                <i class="bi bi-people-fill me-2"></i> Alumni List
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link sidebar-link p-2 admin-close" href="<?= base_url('admin/alumni/create') ?>">
+                <i class="bi bi-person-plus me-2"></i> Add Alumni
+              </a>
+            </li>
+
             <li class="nav-item">
 
               <a class="nav-link sidebar-link p-2 admin-close" href="#">
