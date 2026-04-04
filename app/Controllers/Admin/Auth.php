@@ -47,15 +47,15 @@ class Auth extends BaseController
 
 public function changePassword()
 {
+    $authCheck = $this->checkAdminAuth();
+    if ($authCheck !== true) {
+        return $authCheck;
+    }
+
     $session = session();
     $model   = new \App\Models\AdminModel();
 
-    // 1) Not logged-in → kick out
-    if (! $session->get('isLoggedIn')) {
-        return redirect()->to('/login');
-    }
-
-    // 2) Show the blank form on GET
+    // Show the blank form on GET
     if ($this->request->getMethod() !== 'post') {
         return view('admin/change_password');
     }

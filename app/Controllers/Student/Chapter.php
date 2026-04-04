@@ -249,11 +249,11 @@ class Chapter extends BaseController
      */
     public function clearCache()
     {
-        // Admin check
-        if (!session()->get('is_admin')) {
-            return redirect()->to('/login');
+        $authCheck = $this->checkAdminAuth();
+        if ($authCheck !== true) {
+            return $authCheck;
         }
-        
+
         $cacheDir = WRITEPATH . 'pdf_cache/';
         $deleted = 0;
         
@@ -275,11 +275,11 @@ class Chapter extends BaseController
      */
     public function cacheStatus()
     {
-        // Admin check
-        if (!session()->get('is_admin')) {
-            return redirect()->to('/login');
+        $authCheck = $this->checkAdminAuth();
+        if ($authCheck !== true) {
+            return $authCheck;
         }
-        
+
         $cacheDir = WRITEPATH . 'pdf_cache/';
         $files = [];
         $totalSize = 0;

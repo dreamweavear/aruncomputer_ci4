@@ -244,6 +244,12 @@ class Fees extends BaseController
 
 {
 
+    // Check admin authentication
+    $authCheck = $this->checkAdminAuth();
+    if ($authCheck !== true) {
+        return $authCheck;
+    }
+
     $feeModel = new \App\Models\Admin\FeeModel();
 
     $admissionModel = new \App\Models\Admin\AdmissionModel();
@@ -279,6 +285,12 @@ class Fees extends BaseController
 public function update($id)
 
 {
+
+    // Check admin authentication
+    $authCheck = $this->checkAdminAuth();
+    if ($authCheck !== true) {
+        return $authCheck;
+    }
 
     $feeModel = new \App\Models\Admin\FeeModel();
 
@@ -362,6 +374,12 @@ public function view($student_id)
 
 {
 
+    // Check admin authentication
+    $authCheck = $this->checkAdminAuth();
+    if ($authCheck !== true) {
+        return $authCheck;
+    }
+
     $studentModel = new \App\Models\Admin\AdmissionModel();
 
     $feeModel = new \App\Models\Admin\FeeModel();
@@ -437,6 +455,12 @@ public function view($student_id)
 public function receipt($id)
 
 {
+
+    // Check admin authentication
+    $authCheck = $this->checkAdminAuth();
+    if ($authCheck !== true) {
+        return $authCheck;
+    }
 
     $feeModel = new \App\Models\Admin\FeeModel();
 
@@ -599,6 +623,12 @@ public function receipt($id)
 public function add($id)
 
 {
+
+    // Check admin authentication
+    $authCheck = $this->checkAdminAuth();
+    if ($authCheck !== true) {
+        return $authCheck;
+    }
 
     $admissionModel = new \App\Models\Admin\AdmissionModel();
 

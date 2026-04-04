@@ -54,11 +54,7 @@ class AdmissionPage extends BaseController
         ];
 
         if (!$this->validate($rules, $messages)) {
-            $courseModel = new CourseModel();
-            return view('admission/form_public', [
-                'courses'    => $courseModel->findAll(),
-                'validation' => $this->validator,
-            ]);
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
         $data = [

@@ -150,7 +150,7 @@ $routes->get('student/certificate/(:num)', 'Student\Certificate::view/$1');
 // enquiries
 $routes->get('admin/enquiries', 'Admin\Enquiry::index');
 $routes->get('admin/enquiries/view/(:num)', 'Admin\Enquiry::view/$1');
-$routes->get('admin/enquiries/delete/(:num)', 'Admin\Enquiry::delete/$1');
+$routes->post('admin/enquiries/delete/(:num)', 'Admin\Enquiry::delete/$1');
 
 // notices
 $routes->get('admin/notice', 'Admin\Notice::index');
@@ -171,6 +171,11 @@ $routes->post('admin/chapters/uploadImage', 'Admin\ChapterController::uploadImag
 
 // PDF
 $routes->get('student/chapter/exportPdf/(:segment)', 'Student\Chapter::exportpdf/$1');
+
+// -------------------------
+// PUBLIC ALUMNI PAGE
+// -------------------------
+$routes->get('alumni', 'AlumniPublic::index');
 
 // -------------------------
 // ALUMNI

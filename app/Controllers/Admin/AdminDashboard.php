@@ -9,9 +9,9 @@ class AdminDashboard extends BaseController
 {
     public function index()
     {
-        $session = session();
-        if (! $session->get('isLoggedIn')) {
-            return redirect()->to('/login');
+        $authCheck = $this->checkAdminAuth();
+        if ($authCheck !== true) {
+            return $authCheck;
         }
 
         $model = new AdmissionModel();

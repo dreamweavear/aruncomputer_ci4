@@ -9,19 +9,14 @@ class GalleryController extends BaseController
 
     public function __construct()
     {
-        // ensure only authenticated admin can manage gallery
-        if ($res = $this->checkAdminAuth()) {
-            // if checkAdminAuth returns redirect, forward it
-            if ($res instanceof \CodeIgniter\HTTP\RedirectResponse) {
-                return $res;
-            }
-        }
-
         $this->galleryModel = new GalleryModel();
     }
 
     public function index()
     {
+        $authCheck = $this->checkAdminAuth();
+        if ($authCheck !== true) return $authCheck;
+
         // list all entries
         $data['items'] = $this->galleryModel->orderBy('year', 'DESC')->findAll();
         return view('admin/gallery/index', $data);
@@ -29,11 +24,18 @@ class GalleryController extends BaseController
 
     public function create()
     {
+        $authCheck = $this->checkAdminAuth();
+        if ($authCheck !== true) return $authCheck;
+
         return view('admin/gallery/form');
     }
 
     public function store()
     {
+        $authCheck = $this->checkAdminAuth();
+        if ($authCheck !== true) return $authCheck;
+
+
         helper(['form']);
 
         $validation = $this->validate([
@@ -79,6 +81,9 @@ class GalleryController extends BaseController
 
     public function edit($id = null)
     {
+        $authCheck = $this->checkAdminAuth();
+        if ($authCheck !== true) return $authCheck;
+
         $item = $this->galleryModel->find($id);
         if (! $item) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Gallery entry not found');
@@ -88,6 +93,9 @@ class GalleryController extends BaseController
 
     public function update($id = null)
     {
+        $authCheck = $this->checkAdminAuth();
+        if ($authCheck !== true) return $authCheck;
+
         helper(['form']);
 
         $validationRules = [
@@ -122,6 +130,9 @@ class GalleryController extends BaseController
 
     public function delete($id = null)
     {
+        $authCheck = $this->checkAdminAuth();
+        if ($authCheck !== true) return $authCheck;
+
         $this->galleryModel->delete($id);
         return redirect()->to('/admin/gallery')->with('success', 'Gallery item removed.');
     }

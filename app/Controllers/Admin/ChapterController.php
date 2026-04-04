@@ -83,6 +83,9 @@ public function store()
 // yah function unit ko sahi sellect karne ke liye add kiya gaya jisase keval pgdca I me n dikhe
 
  public function getUnitsByPaper() {
+        $authCheck = $this->checkAdminAuth();
+        if ($authCheck !== true) return $this->response->setJSON(['error' => 'Unauthorized'], 401);
+
         $paperId = $this->request->getGet('paper_id');
         $unitModel = new UnitModel();
         $units = $unitModel->where('paper_id', $paperId)->findAll();
@@ -186,6 +189,10 @@ public function delete($id)
 // tinyMCE image upload function
 public function uploadImage()
 {
+    // Check admin authentication
+    $authCheck = $this->checkAdminAuth();
+    if ($authCheck !== true) return $this->response->setJSON(['error' => 'Unauthorized'], 401);
+
     // Check if file exists
     if (!$this->request->getFile('file')) {
         return $this->response->setStatusCode(400)->setJSON(['error' => 'No file uploaded']);

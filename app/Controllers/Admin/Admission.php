@@ -1035,6 +1035,12 @@ public function create()
 
     {
 
+        // Check admin authentication
+        $authCheck = $this->checkAdminAuth();
+        if ($authCheck !== true) {
+            return $authCheck;
+        }
+
         $testData = [
 
             'name' => 'Test Student',

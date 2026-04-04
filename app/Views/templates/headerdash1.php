@@ -355,7 +355,7 @@ img, video {
 
             <li><hr class="dropdown-divider my-1"></li>
 
-            <li><a class="dropdown-item" href="#"><i class="bi bi-people text-secondary me-2"></i>Alumni</a></li>
+            <li><a class="dropdown-item" href="<?= base_url('alumni') ?>"><i class="bi bi-people text-secondary me-2"></i>Alumni</a></li>
 
             <li><hr class="dropdown-divider my-1"></li>
 
