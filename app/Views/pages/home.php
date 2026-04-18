@@ -1065,6 +1065,54 @@
 
       </div>
 
+                    <div class="col-sm-6 col-lg-3">
+  <a href="https://library.aruncomputer.com" target="_blank" rel="noopener" class="net-card">
+    <div class="net-icon" style="background:#f0f9ff;"><i class="fas fa-book-reader" style="color:#0284c7;"></i></div>
+    <div class="net-body">
+      <h6>Brilient Brains Library</h6>
+      <p>Library management — seats, enrollment & student portal.</p>
+      <div class="net-domain"><i class="fas fa-link me-1"></i>library.aruncomputer.com</div>
+    </div>
+  </a>
+</div>
+
+<div class="col-sm-6 col-lg-3">
+  <a href="https://coaching.vindhy.com" target="_blank" rel="noopener" class="net-card">
+    <div class="net-icon" style="background:#fff1f2;"><i class="fas fa-atom" style="color:#e11d48;"></i></div>
+    <div class="net-body">
+      <h6>Physics Coaching</h6>
+      <p>JEE & School preparation — online registration portal.</p>
+      <div class="net-domain"><i class="fas fa-link me-1"></i>coaching.vindhy.com</div>
+    </div>
+  </a>
+</div>
+
+<div class="col-sm-6 col-lg-3">
+  <a href="https://kayasthsamaj.vindhy.com" target="_blank" rel="noopener" class="net-card">
+    <div class="net-icon" style="background:#f0fdf4;"><i class="fas fa-users" style="color:#15803d;"></i></div>
+    <div class="net-body">
+      <h6>Kayasth Samaj</h6>
+      <p>Community platform — members, personalities & business directory.</p>
+      <div class="net-domain"><i class="fas fa-link me-1"></i>kayasthsamaj.vindhy.com</div>
+    </div>
+  </a>
+</div>
+
+<div class="col-sm-6 col-lg-3">
+  <a href="https://bichhiyaindane.com" target="_blank" rel="noopener" class="net-card">
+    <div class="net-icon" style="background:#fefce8;"><i class="fas fa-store" style="color:#ca8a04;"></i></div>
+    <div class="net-body">
+      <h6>Bichhiya Indane</h6>
+      <p>Local business website — services & customer information.</p>
+      <div class="net-domain"><i class="fas fa-link me-1"></i>bichhiyaindane.com</div>
+    </div>
+  </a>
+</div>
+
+
+
+
+
     </div>
 
   </div>
