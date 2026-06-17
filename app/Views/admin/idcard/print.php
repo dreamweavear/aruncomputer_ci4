@@ -360,6 +360,11 @@ body { font-family: Arial, Helvetica, sans-serif; background: #c8c8c8; }
                 </div>
 
                 <div class="field-row">
+                <span class="f-label">Father :</span>
+                <span class="f-value"><?= esc($student['father_name']) ?></span>
+                </div>
+
+                <div class="field-row">
                     <span class="f-label">Course :</span>
                     <span class="f-value"><?= esc($student['course']) ?></span>
                 </div>
@@ -370,10 +375,16 @@ body { font-family: Arial, Helvetica, sans-serif; background: #c8c8c8; }
                 </div>
 
                 <!-- ③ Address below Adm. Date -->
+                <!--
                 <div class="field-row">
                     <span class="f-label">Address :</span>
                     <span class="f-value"><?= esc($address) ?></span>
                 </div>
+                -->
+
+
+
+
 
                 <div class="field-row row-mobile">
                     <span class="f-label">Mobile :</span>
